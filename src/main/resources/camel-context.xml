@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans.xsd     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd  http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<bean class="com.techgeeknext.camel.routes.DummyPocessor"
+		id="dummyPocessor" />
+		
+		<context:property-placeholder location="classpath:application.properties" ignore-resource-not-found="false" ignore-unresolvable="false" order="1"/>
+	<camel:camelContext
+		xmlns="http://camel.apache.org/schema/spring">
+
+		<!-- <propertyPlaceholder id="placeholder" location="file:/africa_agile/opt/ekyc_mw/ipacs.properties"/> -->
+		<!-- New Transaction Route -->
+		<camel:route id="KycTransaction_dummy">
+			<camel:from id="tr_from_dummy" uri="${activemq.dummyQ}" />
+			<camel:delay id="tr_delay_dummy">
+				<constant>1000</constant>
+			</camel:delay>
+			<camel:process id="Dummy_P" ref="dummyPocessor" />
+		</camel:route>
+	</camel:camelContext>
+
+
+</beans>
